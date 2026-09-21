@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Program — KELSC NeuroAI Workshop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">Kempner <span class="x">×</span> ELSC</a>
+    <nav class="nav-links">
+      <a href="faculty.html">Faculty</a>
+      <a href="projects.html">Projects</a>
+      <a href="news.html">News</a>
+      <a href="events.html" class="active">Events</a>
+      <a href="publications.html">Publications</a>
+    </nav>
+    <div class="nav-actions"></div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <a class="page-back" href="workshop.html">← Back to workshop</a>
+    <h1>Program</h1>
+    <p class="page-header-sub">Day-by-day schedule for the KELSC NeuroAI Workshop, January 19–21, 2027. Please check back at a later date for an up-to-date program.</p>
+  </div>
+</div>
+
+<!-- Shared workshop sub-nav — keep this block in sync across the four workshop pages -->
+<div class="wk-subnav">
+  <div class="wk-subnav-inner">
+    <a href="workshop.html">Overview</a>
+    <a href="workshop-program.html" class="active">Program</a>
+    <a href="workshop-speakers.html">Speakers</a>
+    <a href="workshop-posters.html">Poster Presentations</a>
+  </div>
+</div>
+
+<section class="section">
+  <div class="section-inner">
+    <div id="programRoot"></div>
+    <div class="empty-state" id="programEmpty" hidden>
+      <h2>Program coming soon</h2>
+      <p>The full schedule for the KELSC NeuroAI Workshop will be posted here closer to the event.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-orgs">
+      Kempner Institute · Harvard University
+      &nbsp;·&nbsp;
+      Edmond &amp; Lily Safra Center for Brain Sciences · Hebrew University of Jerusalem
+    </p>
+    <a class="footer-link" href="https://forms.gle/8bMjVYUCSQXRoCqAA" target="_blank" rel="noopener">
+      Express collaboration interest →
+    </a>
+  </div>
+</footer>
+
+<script>
+// ── PROGRAM DATA ──────────────────────────────────────────────────────────────
+// One entry per day: { day, date, rows: [...] }
+// Each row: { time, title, speaker, break }
+//   time:    e.g. "09:00 – 09:30"
+//   title:   session or talk title
+//   speaker: presenter name / affiliation (optional)
+//   break:   true for coffee, lunch, and other non-talk rows — renders muted
+//
+// To show the "coming soon" empty state instead, set PROGRAM to an empty array: []
+const PROGRAM = [
+  {
+    day: "Day 1",
+    date: "Tuesday, January 19, 2027",
+    rows: [
+      { time: "10:00 AM – 05:00 PM", title: "Day 1", break: true },
+      // { time: "09:30 – 09:45", title: "Welcome and opening remarks", speaker: "Organizers" },
+      // { time: "09:45 – 10:30", title: "Keynote talk title", speaker: "Speaker Name · Institution" },
+      // { time: "10:30 – 11:00", title: "Coffee break", break: true },
+      // { time: "11:00 – 12:30", title: "Session 1: Session theme", speaker: "Speaker Name, Speaker Name" },
+      // { time: "12:30 – 14:00", title: "Lunch", break: true },
+      // { time: "14:00 – 15:30", title: "Session 2: Session theme", speaker: "Speaker Name, Speaker Name" },
+      // { time: "15:30 – 17:30", title: "Poster session", speaker: "See poster presentations" },
+    ]
+  },
+  {
+    day: "Day 2",
+    date: "Wednesday, January 20, 2027",
+    rows: [
+      { time: "10:00 AM – 08:00 PM", title: "Day 2", break: true },
+      // { time: "09:30 – 10:15", title: "Keynote talk title", speaker: "Speaker Name · Institution" },
+      // { time: "10:15 – 12:30", title: "Session 3: Session theme", speaker: "Speaker Name, Speaker Name" },
+      // { time: "12:30 – 14:00", title: "Lunch", break: true },
+      // { time: "14:00 – 15:30", title: "Session 4: Session theme", speaker: "Speaker Name, Speaker Name" },
+      // { time: "15:30 – 17:00", title: "Breakout discussions", speaker: "All participants" },
+    ]
+  },
+  {
+    day: "Day 3",
+    date: "Thursday, January 21, 2027",
+    rows: [
+      { time: "10:00 AM – 03:00 PM", title: "Day 3", break: true },
+      // { time: "09:30 – 11:00", title: "Session 5: Session theme", speaker: "Speaker Name, Speaker Name" },
+      // { time: "11:00 – 12:00", title: "Panel: Future directions", speaker: "Panelists TBA" },
+      // { time: "12:00 – 12:30", title: "Closing remarks", speaker: "Organizers" },
+    ]
+  },
+];
+
+const root = document.getElementById('programRoot');
+
+if (!PROGRAM.length) {
+  document.getElementById('programEmpty').hidden = false;
+} else {
+  PROGRAM.forEach(day => {
+    const section = document.createElement('div');
+    section.className = 'program-day';
+    const rowsHtml = day.rows.map(r => `
+      <li class="program-row${r.break ? ' is-break' : ''}">
+        <span class="program-time">${r.time}</span>
+        <div>
+          <div class="program-title">${r.title}</div>
+          ${r.speaker ? `<div class="program-speaker">${r.speaker}</div>` : ''}
+        </div>
+      </li>
+    `).join('');
+    section.innerHTML = `
+      <div class="program-day-head">
+        <span class="program-day-name">${day.day}</span>
+        <span class="program-day-date">${day.date}</span>
+      </div>
+      <ul class="program-rows">${rowsHtml}</ul>
+    `;
+    root.appendChild(section);
+  });
+}
+</script>
+
+</body>
+</html>
