@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Speakers — KELSC NeuroAI Workshop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">Kempner <span class="x">×</span> ELSC</a>
+    <nav class="nav-links">
+      <a href="faculty.html">Faculty</a>
+      <a href="projects.html">Projects</a>
+      <a href="news.html">News</a>
+      <a href="events.html" class="active">Events</a>
+      <a href="publications.html">Publications</a>
+    </nav>
+    <div class="nav-actions"></div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <a class="page-back" href="workshop.html">← Back to workshop</a>
+    <h1>Speakers</h1>
+    <p class="page-header-sub">Invited speakers at the KELSC NeuroAI Workshop. Select a speaker to read their abstract.</p>
+  </div>
+</div>
+
+<!-- Shared workshop sub-nav — keep this block in sync across the four workshop pages -->
+<div class="wk-subnav">
+  <div class="wk-subnav-inner">
+    <a href="workshop.html">Overview</a>
+    <a href="workshop-program.html">Program</a>
+    <a href="workshop-speakers.html" class="active">Speakers</a>
+    <a href="workshop-posters.html">Poster Presentations</a>
+  </div>
+</div>
+
+<section class="section">
+  <div class="section-inner">
+    <div class="section-head">
+      <h2 class="section-title">Invited Speakers</h2>
+      <span class="badge" id="speakersBadge"></span>
+    </div>
+    <div class="grid" id="speakersGrid"></div>
+    <div class="empty-state" id="speakersEmpty" hidden>
+      <h2>Speakers to be announced</h2>
+      <p>The invited speaker lineup for the KELSC NeuroAI Workshop will be posted here soon.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-orgs">
+      Kempner Institute · Harvard University
+      &nbsp;·&nbsp;
+      Edmond &amp; Lily Safra Center for Brain Sciences · Hebrew University of Jerusalem
+    </p>
+    <a class="footer-link" href="https://forms.gle/8bMjVYUCSQXRoCqAA" target="_blank" rel="noopener">
+      Express collaboration interest →
+    </a>
+  </div>
+</footer>
+
+<!-- Side Peek Panel -->
+<div class="overlay" id="overlay"></div>
+<aside class="peek" id="peek">
+  <div class="peek-topbar">
+    <button class="peek-close" id="peekClose">✕ close</button>
+  </div>
+  <img class="peek-photo" id="peekPhoto" src="" alt="">
+  <div class="peek-photo-ph" id="peekPhotoPh" hidden></div>
+  <div class="peek-content">
+    <h2 class="peek-name" id="peekName"></h2>
+    <p class="peek-affil" id="peekAffil"></p>
+    <div class="peek-links" id="peekLinks"></div>
+    <p class="peek-talk" id="peekTalk"></p>
+    <p class="peek-abstract-label" id="peekAbstractLabel">Abstract</p>
+    <p class="peek-summary" id="peekAbstract"></p>
+  </div>
+</aside>
+
+<script>
+// ── SPEAKERS DATA ─────────────────────────────────────────────────────────────
+// Each speaker: { id, name, affiliation, photo, talk, abstract, link }
+//   id:          short slug — becomes the #hash so a speaker can be linked directly
+//   name:        display name
+//   affiliation: institution / department line
+//   photo:       path under images/ — square-ish crops look best.
+//                Leave "" and the card falls back to the speaker's initials.
+//   talk:        talk title (optional)
+//   abstract:    talk abstract (optional)
+//   link:        lab or personal site (optional)
+const SPEAKERS = [
+  {
+    id: "speaker-one",
+    name: "Speaker Name",
+    affiliation: "Institution · Department",
+    photo: "",
+    talk: "Title of the talk goes here",
+    abstract: "Paste the speaker's abstract here. A few sentences describing the question, the approach, and the main result.",
+    link: ""
+  },
+  {
+    id: "speaker-two",
+    name: "Speaker Name",
+    affiliation: "Institution · Department",
+    photo: "",
+    talk: "Title of the talk goes here",
+    abstract: "Paste the speaker's abstract here. A few sentences describing the question, the approach, and the main result.",
+    link: ""
+  },
+  {
+    id: "speaker-three",
+    name: "Speaker Name",
+    affiliation: "Institution · Department",
+    photo: "",
+    talk: "Title of the talk goes here",
+    abstract: "Paste the speaker's abstract here. A few sentences describing the question, the approach, and the main result.",
+    link: ""
+  },
+];
+
+const grid  = document.getElementById('speakersGrid');
+const badge = document.getElementById('speakersBadge');
+
+// First letter of the first two words of a name, e.g. "Kanaka Rajan" → "KR"
+function initials(name) {
+  return name.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+}
+
+if (!SPEAKERS.length) {
+  // No speakers announced yet — show the empty state instead of an empty grid.
+  document.getElementById('speakersEmpty').hidden = false;
+  grid.hidden = true;
+  badge.hidden = true;
+} else {
+  SPEAKERS.forEach(s => {
+    const el = document.createElement('article');
+    el.className = 'card';
+    el.innerHTML = `
+      ${s.photo
+        ? `<img class="card-photo" src="${s.photo}" alt="${s.name}" loading="lazy">`
+        : `<div class="card-photo-ph" aria-hidden="true">${initials(s.name)}</div>`}
+      <div class="card-body">
+        <div class="card-name">${s.name}</div>
+        ${s.affiliation ? `<div class="card-affil">${s.affiliation}</div>` : ''}
+        ${s.talk ? `<div class="card-tags"><span class="tag">${s.talk}</span></div>` : ''}
+      </div>
+    `;
+    el.addEventListener('click', () => openPeek(s));
+    grid.appendChild(el);
+  });
+  badge.textContent = `${SPEAKERS.length} speaker${SPEAKERS.length === 1 ? '' : 's'}`;
+}
+
+const peek          = document.getElementById('peek');
+const overlay       = document.getElementById('overlay');
+const peekName      = document.getElementById('peekName');
+const peekAffil     = document.getElementById('peekAffil');
+const peekPhoto     = document.getElementById('peekPhoto');
+const peekLinks     = document.getElementById('peekLinks');
+const peekTalk      = document.getElementById('peekTalk');
+const peekAbstract  = document.getElementById('peekAbstract');
+const peekAbsLabel  = document.getElementById('peekAbstractLabel');
+const peekPhotoPh   = document.getElementById('peekPhotoPh');
+
+function openPeek(s) {
+  peekName.textContent     = s.name;
+  peekAffil.textContent    = s.affiliation || '';
+  peekAffil.hidden         = !s.affiliation;
+  if (s.photo) {
+    peekPhoto.src = s.photo;
+    peekPhoto.alt = s.name;
+  }
+  peekPhoto.hidden          = !s.photo;
+  peekPhotoPh.hidden        = !!s.photo;
+  peekPhotoPh.textContent   = s.photo ? '' : initials(s.name);
+  peekTalk.textContent     = s.talk || '';
+  peekTalk.hidden          = !s.talk;
+  peekAbstract.textContent = s.abstract || '';
+  peekAbstract.hidden      = !s.abstract;
+  peekAbsLabel.hidden      = !s.abstract;
+  peekLinks.innerHTML      = s.link
+    ? `<a class="peek-link" href="${s.link}" target="_blank" rel="noopener">Lab site</a>`
+    : '';
+  peek.classList.add('open');
+  overlay.classList.add('show');
+  history.pushState(null, '', `#${s.id}`);
+}
+
+function closePeek() {
+  peek.classList.remove('open');
+  overlay.classList.remove('show');
+  history.pushState(null, '', location.pathname);
+}
+
+document.getElementById('peekClose').addEventListener('click', closePeek);
+overlay.addEventListener('click', closePeek);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePeek(); });
+
+// Deep link: workshop-speakers.html#speaker-id opens that speaker's panel
+if (location.hash) {
+  const s = SPEAKERS.find(s => s.id === location.hash.slice(1));
+  if (s) openPeek(s);
+}
+</script>
+
+</body>
+</html>

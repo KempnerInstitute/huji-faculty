@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Poster Presentations — KELSC NeuroAI Workshop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">Kempner <span class="x">×</span> ELSC</a>
+    <nav class="nav-links">
+      <a href="faculty.html">Faculty</a>
+      <a href="projects.html">Projects</a>
+      <a href="news.html">News</a>
+      <a href="events.html" class="active">Events</a>
+      <a href="publications.html">Publications</a>
+    </nav>
+    <div class="nav-actions"></div>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <a class="page-back" href="workshop.html">← Back to workshop</a>
+    <h1>Poster Presentations</h1>
+    <p class="page-header-sub">Accepted posters for the KELSC NeuroAI Workshop.</p>
+  </div>
+</div>
+
+<!-- Shared workshop sub-nav — keep this block in sync across the four workshop pages -->
+<div class="wk-subnav">
+  <div class="wk-subnav-inner">
+    <a href="workshop.html">Overview</a>
+    <a href="workshop-program.html">Program</a>
+    <a href="workshop-speakers.html">Speakers</a>
+    <a href="workshop-posters.html" class="active">Poster Presentations</a>
+  </div>
+</div>
+
+<section class="section">
+  <div class="section-inner">
+    <div class="section-head">
+      <h2 class="section-title">Accepted Posters</h2>
+      <span class="badge" id="postersBadge"></span>
+    </div>
+    <ul class="poster-list" id="postersList"></ul>
+    <div class="empty-state" id="postersEmpty" hidden>
+      <h2>Posters to be announced</h2>
+      <p>Accepted posters will be listed here once abstract review is complete. Submit an abstract from the <a href="workshop.html">workshop overview page</a>.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <p class="footer-orgs">
+      Kempner Institute · Harvard University
+      &nbsp;·&nbsp;
+      Edmond &amp; Lily Safra Center for Brain Sciences · Hebrew University of Jerusalem
+    </p>
+    <a class="footer-link" href="https://forms.gle/8bMjVYUCSQXRoCqAA" target="_blank" rel="noopener">
+      Express collaboration interest →
+    </a>
+  </div>
+</footer>
+
+<script>
+// ── POSTER DATA ───────────────────────────────────────────────────────────────
+// Each poster: { title, authors, affiliation, url }
+//   title:       poster title
+//   authors:     presenting author first, e.g. "Author A., Author B."
+//   affiliation: institution line (optional)
+//   url:         link to a PDF or abstract page (optional)
+//
+// Posters are numbered automatically in list order.
+// To show the "to be announced" empty state instead, set POSTERS to []
+const POSTERS = [
+  {
+    title: "Poster title goes here",
+    authors: "Presenting Author, Co-Author, Co-Author",
+    affiliation: "Institution",
+    url: ""
+  },
+  {
+    title: "Poster title goes here",
+    authors: "Presenting Author, Co-Author",
+    affiliation: "Institution",
+    url: ""
+  },
+  {
+    title: "Poster title goes here",
+    authors: "Presenting Author, Co-Author",
+    affiliation: "Institution",
+    url: ""
+  },
+];
+
+const list  = document.getElementById('postersList');
+const badge = document.getElementById('postersBadge');
+
+if (!POSTERS.length) {
+  document.getElementById('postersEmpty').hidden = false;
+  list.hidden = true;
+  badge.hidden = true;
+} else {
+  POSTERS.forEach((p, i) => {
+    const li = document.createElement('li');
+    li.className = 'poster-item';
+    const titleHtml = p.url
+      ? `<a class="event-title" href="${p.url}" target="_blank" rel="noopener">${p.title}</a>`
+      : `<div class="poster-title">${p.title}</div>`;
+    li.innerHTML = `
+      <span class="poster-num">${i + 1}</span>
+      <div>
+        ${titleHtml}
+        <div class="poster-authors">${p.authors}</div>
+        ${p.affiliation ? `<div class="poster-affil">${p.affiliation}</div>` : ''}
+      </div>
+    `;
+    list.appendChild(li);
+  });
+  badge.textContent = `${POSTERS.length} poster${POSTERS.length === 1 ? '' : 's'}`;
+}
+</script>
+
+</body>
+</html>

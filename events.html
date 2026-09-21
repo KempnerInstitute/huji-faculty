@@ -60,7 +60,7 @@ const EVENTS = [
     title: "KELSC NeuroAI Workshop",
     location: "Boston, MA",
     text: "Our kickoff event bringing together researchers from Kempner and ELSC.",
-    url: "#"
+    url: "workshop.html"
   },
   // {
   //   date: "Add date",
@@ -75,10 +75,13 @@ const eventsList = document.getElementById('eventsList');
 EVENTS.forEach(ev => {
   const li = document.createElement('li');
   li.className = 'event-item';
+  // Internal pages (e.g. workshop.html) open in the same tab; external links get a new one.
+  const external = /^https?:\/\//.test(ev.url);
+  const target = external ? ' target="_blank" rel="noopener"' : '';
   li.innerHTML = `
     <span class="event-date">${ev.date}</span>
     <div>
-      <a class="event-title" href="${ev.url}" target="_blank" rel="noopener">${ev.title}</a>
+      <a class="event-title" href="${ev.url}"${target}>${ev.title}</a>
       ${ev.location ? `<p class="event-location">${ev.location}</p>` : ''}
       <p class="event-text">${ev.text}</p>
     </div>
