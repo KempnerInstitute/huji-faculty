@@ -69,10 +69,12 @@
 <script>
 // ── PROGRAM DATA ──────────────────────────────────────────────────────────────
 // One entry per day: { day, date, rows: [...] }
-// Each row: { time, title, speaker, break }
+// Each row: { time, title, speaker, note, break }
 //   time:    e.g. "09:00 – 09:30"
 //   title:   session or talk title
-//   speaker: presenter name / affiliation (optional)
+//   speaker: presenter name / affiliation (optional) — when present it is the
+//            emphasized top line and the title renders beneath it
+//   note:    secondary line for rows with no speaker (e.g. "Optional")
 //   break:   true for coffee, lunch, and other non-talk rows — renders muted
 //
 // To show the "coming soon" empty state instead, set PROGRAM to an empty array: []
@@ -81,36 +83,49 @@ const PROGRAM = [
     day: "Day 1",
     date: "Tuesday, January 19, 2027",
     rows: [
-      { time: "10:00 AM – 05:00 PM", title: "Day 1", break: true },
-      // { time: "09:30 – 09:45", title: "Welcome and opening remarks", speaker: "Organizers" },
-      // { time: "09:45 – 10:30", title: "Keynote talk title", speaker: "Speaker Name · Institution" },
-      // { time: "10:30 – 11:00", title: "Coffee break", break: true },
-      // { time: "11:00 – 12:30", title: "Session 1: Session theme", speaker: "Speaker Name, Speaker Name" },
-      // { time: "12:30 – 14:00", title: "Lunch", break: true },
-      // { time: "14:00 – 15:30", title: "Session 2: Session theme", speaker: "Speaker Name, Speaker Name" },
-      // { time: "15:30 – 17:30", title: "Poster session", speaker: "See poster presentations" },
+      { time: "10:00 AM – 10:15 AM", title: "Welcome and opening remarks", note: "Organizers", break: true },
+      { time: "10:15AM – 10:40 AM", title: "Talk title to be announced", speaker: "Venki Murthy" },
+      { time: "10:40 AM – 11:05 AM", title: "Talk title to be announced", speaker: "Ami Citri" },
+      { time: "11:05 AM – 11:10 AM", title: "Break", break: true },
+      { time: "11:10 AM – 11:35 AM", title: "Talk title to be announced", speaker: "Yonatan Loewenstein" },
+      { time: "11:35 AM – 12:00 PM", title: "Talk title to be announced", speaker: "Mati Joshua" },
+      { time: "12:00 PM – 2:00 PM", title: "Lunch with Special Interest Groups", break: true },
+      { time: "2:00 PM – 2:25 PM", title: "Talk title to be announced", speaker: "Kanaka Rajan" },
+      { time: "2:25 PM – 2:50 PM", title: "Talk title to be announced", speaker: "Elom Amematsro" },
+      { time: "2:50 PM – 3:15 PM", title: "Talk title to be announced", speaker: "Lilach Avitan" },
+      { time: "3:15 PM – 3:30 PM", title: "Break", break: true },
+      { time: "3:30 PM – 5:00 PM", title: "Poster session", note: "See poster presentations" },
     ]
   },
   {
     day: "Day 2",
     date: "Wednesday, January 20, 2027",
     rows: [
-      { time: "10:00 AM – 08:00 PM", title: "Day 2", break: true },
-      // { time: "09:30 – 10:15", title: "Keynote talk title", speaker: "Speaker Name · Institution" },
-      // { time: "10:15 – 12:30", title: "Session 3: Session theme", speaker: "Speaker Name, Speaker Name" },
-      // { time: "12:30 – 14:00", title: "Lunch", break: true },
-      // { time: "14:00 – 15:30", title: "Session 4: Session theme", speaker: "Speaker Name, Speaker Name" },
-      // { time: "15:30 – 17:00", title: "Breakout discussions", speaker: "All participants" },
+      { time: "9:55 AM – 10:00 AM", title: "Welcome", break: true },
+      { time: "10:00 AM – 10:25 AM", title: "Talk title to be announced", speaker: "Cengiz Pehlevan" },
+      { time: "10:25 AM – 10:50 AM", title: "Talk title to be announced", speaker: "Yilun Du" },
+      { time: "10:50 AM – 10:55 AM", title: "Break", break: true },
+      { time: "10:55 AM – 11:20 AM", title: "Talk title to be announced", speaker: "Kianté Brantley" },
+      { time: "11:20 AM – 11:45 AM", title: "Talk title to be announced", speaker: "Yair Weiss" },
+      { time: "11:45 AM – 1:15 PM", title: "Lunch with Special Interest Groups", break: true },
+      { time: "1:15 PM – 1:40 PM", title: "Talk title to be announced", speaker: "Haim Sompolinsky" },
+      { time: "1:40 PM – 2:05 PM", title: "Talk title to be announced", speaker: "TBD" },
+      { time: "2:05 PM – 5:00 PM", title: "Trip to Harvard's Natural History Museum", note: "Optional" },
+      { time: "5:30 PM – 8:00 PM", title: "Participant's Dinner", note: "Nubar" },
     ]
   },
   {
     day: "Day 3",
     date: "Thursday, January 21, 2027",
     rows: [
-      { time: "10:00 AM – 03:00 PM", title: "Day 3", break: true },
-      // { time: "09:30 – 11:00", title: "Session 5: Session theme", speaker: "Speaker Name, Speaker Name" },
-      // { time: "11:00 – 12:00", title: "Panel: Future directions", speaker: "Panelists TBA" },
-      // { time: "12:00 – 12:30", title: "Closing remarks", speaker: "Organizers" },
+      { time: "9:55 AM – 10:00 AM", title: "Welcome", break: true },
+      { time: "10:00 AM – 10:25 AM", title: "Talk title to be announced", speaker: "David Omer" },
+      { time: "10:25 AM – 10:50 AM", title: "Talk title to be announced", speaker: "Eran Lottem" },
+      { time: "10:50 AM – 11:15 AM", title: "Talk title to be announced", speaker: "Bernardo Sabatini" },
+      { time: "11:15 AM – 11:40 AM", title: "Talk title to be announced", speaker: "David Beniaguev" },
+      { time: "11:40 AM – 12:05 PM", title: "Talk title to be announced", speaker: "TBD" },
+      { time: "12:05 PM – 1:05 PM", title: "Lunch", break: true },
+      { time: "1:05 PM – 4:00 PM", title: "Meeting/Collaboration Time", break: true },
     ]
   },
 ];
@@ -127,8 +142,11 @@ if (!PROGRAM.length) {
       <li class="program-row${r.break ? ' is-break' : ''}">
         <span class="program-time">${r.time}</span>
         <div>
-          <div class="program-title">${r.title}</div>
-          ${r.speaker ? `<div class="program-speaker">${r.speaker}</div>` : ''}
+          ${r.speaker
+            ? `<div class="program-primary">${r.speaker}</div>
+               <div class="program-secondary">${r.title}</div>`
+            : `<div class="program-primary">${r.title}</div>
+               ${r.note ? `<div class="program-secondary">${r.note}</div>` : ''}`}
         </div>
       </li>
     `).join('');

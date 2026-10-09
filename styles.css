@@ -767,10 +767,11 @@ body {
   padding-top: 0.1rem;
   letter-spacing: 0.01em;
 }
-.program-title { font-size: 0.92rem; font-weight: 600; color: var(--ink); line-height: 1.45; }
-.program-speaker { font-size: 0.84rem; color: var(--muted); margin-top: 0.15rem; }
+/* Top line carries the emphasis — the speaker for talks, the title otherwise */
+.program-primary { font-size: 0.92rem; font-weight: 600; color: var(--ink); line-height: 1.45; }
+.program-secondary { font-size: 0.84rem; color: var(--muted); margin-top: 0.15rem; }
 /* Breaks, meals and other non-talk rows sit back visually */
-.program-row.is-break .program-title { font-weight: 500; color: var(--muted); }
+.program-row.is-break .program-primary { font-weight: 500; color: var(--muted); }
 
 /* ── WORKSHOP: POSTER LIST ── */
 .poster-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
